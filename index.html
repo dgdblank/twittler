@@ -1,82 +1,129 @@
 <!DOCTYPE html>
-<html>
-    <head>
-         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-         <link href="twittler.css" rel="stylesheet">
+<html lang="en">
+  <head>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+
+    .title{
+      text-align: center;
+    }
+    .col-md-4{
+      background: black;
+      color: white;
+      text-align: center;
+    }
+    .col-md-8{
+      background: white;
+      color: black;
+      text-align: center;
+    }
+
+    footer{
+      text-align: center;
+    }
+
+    form{
+      margin-top: 15px;
+    }
+
+    .col-md-12{
+      text-align: center;
+    }
+
+    li{
+      margin-top: 15px;
+      color: black;
+    }
+
+    
+
+
+    </style>
+
+
+
   </head>
-    </head>
-    <body>
+  <body>
 
-    <div class="container">
-        <div class="page-header">
-            <h1 class="title">Twittler</h1>
-        </div>
 
-    <div class="row">
-        <div class="col-sm-8 main">
-            <div class="panel panel-primary tweets">
-                <div class="panel-heading">
-                 <button type="button" class="btn btn-primary tweet-button">New Tweets</button>
-                </div>
-                <div class="panel-body"></div>
-                <ul class="list-group stream"></ul>
+    <div class="container main">
+
+      <div class="row">
+
+        <div class="col-md-4">Users</div>
+
+        <div class="col-md-8">
+
+          <h1>Twittler</h1>
+
+          <button class="btn btn-success btn-block" id="tweet-button">New Tweets</button>
+
+          <form class="form-inline">
+            <div class="form-group">
+                <label for="inputTweetHandle">@</label>
+                <input type="text" class="form-control" id="inputeTweetHandle" placeholder="Enter handle">
             </div>
-        </div>
+            <div class="form-group">
+                <label for="visitorTweet"></label>
+                <input type="text" class="form-control" id="visitorTweet" placeholder="I think...">
+            </div>
+            <button type="submit" class="btn btn-info">Submit</button>
+          </form>
 
-        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-          <div class="sidebar-module">
-            <h4>Users</h4>
-            <ul class="user-list">
-            <li><a href="#">March 2014</a></li>
-              <li><a href="#">February 2014</a></li>
-              <li><a href="#">January 2014</a></li>
-              <li><a href="#">December 2013</a></li>
-              <li><a href="#">November 2013</a></li>
-              <li><a href="#">October 2013</a></li>
-              <li><a href="#">September 2013</a></li>
-              <li><a href="#">August 2013</a></li>
-              <li><a href="#">July 2013</a></li>
-              <li><a href="#">June 2013</a></li>
-              <li><a href="#">May 2013</a></li>
-              <li><a href="#">April 2013</a></li></ul>
-          </div>
-        </div><!-- /.blog-sidebar -->
+          <ul class="list-group" id="feed">
+            <li class="list-group-item">
+              <div>@Tweeter: This is an example tweet. #finally</div>
+              <div>timestamp less than a minute ago</div>
+            </li>
+            <li class="list-group-item">
+              <div>@Tweeter2: This is second example tweet. #booya</div>
+              <span>timestamp a minute ago</span>
+            </li>
+          </ul>
 
-      </div><!-- /.row -->
+        </div> <!--- col-md-8 -->
+      </div> <!--- Row -->
+    </div> <!--- Container -->
 
-    </div><!-- /.container -->
+                
 
-
-
-        <script src="jquery.js"></script>
-        <script src="data_generator.js"></script>
-        <script type="js/bootstrap.min.js"></script>
-
-        <script>
-        $(document).ready(function(){
-        
-       var getTweets = function() {
-       var index = streams.home.length - 1;
-       $stream.html('');
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<li class="list-group-item"></li>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.prependTo($stream);
-          index -= 1;
-        }
-      };
-
-        var $body = $('body');
-        var $stream = $('.list-group.stream');
-
-        //Event Handling
-        $('.btn.btn-primary.tweet-button').on('click', getTweets);
-
-      });
-        </script>
-
-
-    </body>
     <footer>&copy; Danielle Blank 2015</footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="jquery.js"></script>
+    <script src="data_generator.js"></script>
+    <script src="timeSince.js"></script>
+
+    <script>
+      $(document).ready(function () {
+
+         // Get all Tweets
+          var getTweets = function () {
+            var index = streams.home.length - 1;
+            $feed.html('');
+             while(index >= 0){
+                var tweet = streams.home[index];
+                var $tweetItem = $('<li class="list-group-item"></li>');
+                var $tweet = $('<div class="tweet"></div>')
+                var formattedTime = timeSince(tweet.created_at) + (timeSince(tweet.created_at) !== 'Just now' ? ' ago':'');
+              $tweet.text('@' + tweet.user + ': ' + tweet.message + " " + formattedTime);
+              $tweetItem.prepend($tweet);
+              $tweetItem.prependTo($feed);
+              index -= 1;
+              }
+            };
+
+      var $body = $('body');
+      var $feed = $('#feed');
+
+      // Event Handling
+      $('#tweet-button').on('click', getTweets);
+
+    });
+
+    </script>
+    
+  </body>
 </html>
