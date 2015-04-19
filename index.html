@@ -20,6 +20,7 @@
           <h2>Users</h2>
 
           <ul class="list-group" id="users">
+            <li class="list-group-item btn btn-default" id="all-users">All Users</li>
           </ul>
         </div>
 
@@ -114,18 +115,21 @@
         $username.prependTo($userList);
       };
 
-      // Event Handling
+      // Event handling to view all user tweets
       $('#tweet-button').on('click', getTweets);
-      $('.list-group-item.btn.btn-default.user').on('click', function(){
-        var name = $(this).text();
-        getUserTweets(name);
-      });
+      $('#all-users').on('click', getTweets);
+
+
+      // Event handling for viewing individual user's tweets
       $(document).on('click', '.handle', function(){
         var name = $(this).text();
         getUserTweets(name);
       })
+      $('.list-group-item.btn.btn-default.user').on('click', function(){
+        var name = $(this).text();
+        getUserTweets(name);
+      });
       
-      // Visitor tweet added to Twittler
       
       
 
