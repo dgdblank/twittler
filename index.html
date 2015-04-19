@@ -10,9 +10,10 @@
       text-align: center;
     }
     .col-md-4{
-      background: black;
-      color: white;
+      background: @success;
+      color: black;
       text-align: center;
+      padding: 200 px;
     }
     .col-md-8{
       background: white;
@@ -30,16 +31,13 @@
 
     .col-md-12{
       text-align: center;
+      padding: 20px;
     }
 
     li{
       margin-top: 15px;
       color: black;
     }
-
-    
-
-
     </style>
 
 
@@ -47,12 +45,24 @@
   </head>
   <body>
 
-
+    <div class="container top-padding">
+      <div class="row">
+        <div class="col-md-12"></div>
+      </div>
+    </div>
+    
     <div class="container main">
+
 
       <div class="row">
 
-        <div class="col-md-4">Users</div>
+        <div class="col-md-4 bg-success">
+          <h2>Users</h2>
+
+          <ul class="list-group" id="users">
+            <li class="list-group-item btn btn-default user">All Users</li>
+          </ul>
+        </div>
 
         <div class="col-md-8">
 
@@ -72,19 +82,12 @@
             <button type="submit" class="btn btn-info">Submit</button>
           </form>
 
-          <ul class="list-group" id="feed">
-            <li class="list-group-item">
-              <div>@Tweeter: This is an example tweet. #finally</div>
-              <div>timestamp less than a minute ago</div>
-            </li>
-            <li class="list-group-item">
-              <div>@Tweeter2: This is second example tweet. #booya</div>
-              <span>timestamp a minute ago</span>
-            </li>
-          </ul>
+          <ul class="list-group" id="feed"></ul>
 
         </div> <!--- col-md-8 -->
       </div> <!--- Row -->
+
+      </div>
     </div> <!--- Container -->
 
                 
@@ -109,17 +112,52 @@
                 var $tweet = $('<div class="tweet"></div>')
                 var formattedTime = timeSince(tweet.created_at) + (timeSince(tweet.created_at) !== 'Just now' ? ' ago':'');
               $tweet.text('@' + tweet.user + ': ' + tweet.message + " " + formattedTime);
-              $tweetItem.prepend($tweet);
+              $tweetItem.append($tweet);
               $tweetItem.prependTo($feed);
               index -= 1;
               }
             };
 
+            var getUserTweets = function(username) {
+              var index = 0;
+              $feed.html('');
+              while(index < streams.home.length - 1){
+                var tweet = streams.users[username][index];
+                var $tweetItem = $('<li class="list-group-item"></li>');
+                var $tweet = $('<div class="tweet"></div>')
+                var formattedTime = timeSince(tweet.created_at) + (timeSince(tweet.created_at) !== 'Just now' ? ' ago':'');
+                $tweet.text('@' + username + ': ' + tweet.message + " " + formattedTime);
+                $tweetItem.append($tweet);
+                $tweetItem.prependTo($feed);
+                index += 1;
+              }
+            };
+
+
       var $body = $('body');
       var $feed = $('#feed');
+      var $userList = $('#users');
+      
+      // Display Userlist
+      for (user in streams.users){
+        var $username = $('<li class="list-group-item btn btn-default user"></li>')
+        $username.text(user);
+        $username.prependTo($userList);
+      };
 
       // Event Handling
       $('#tweet-button').on('click', getTweets);
+      $('.list-group-item.btn.btn-default.user').on('click', function(){
+        var name = $(this).text();
+        if(name !== "All Users"){
+          $feed.empty();
+          getUserTweets(name);
+        } else {
+          getTweets;
+        }
+      });
+      
+
 
     });
 
