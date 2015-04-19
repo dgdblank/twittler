@@ -1,47 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-
     <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-
-    .title{
-      text-align: center;
-    }
-    .col-md-4{
-      background: @success;
-      color: black;
-      text-align: center;
-      padding: 200 px;
-    }
-    .col-md-8{
-      background: white;
-      color: black;
-      text-align: center;
-    }
-
-    footer{
-      text-align: center;
-    }
-
-    form{
-      margin-top: 15px;
-    }
-
-    .col-md-12{
-      text-align: center;
-      padding: 20px;
-    }
-
-    li{
-      margin-top: 15px;
-      color: black;
-    }
-    </style>
-
-
-
+    <link href="twittler.css" rel="stylesheet">
   </head>
   <body>
 
@@ -52,15 +14,12 @@
     </div>
     
     <div class="container main">
-
-
       <div class="row">
 
         <div class="col-md-4 bg-success">
           <h2>Users</h2>
 
           <ul class="list-group" id="users">
-            <li class="list-group-item btn btn-default user">All Users</li>
           </ul>
         </div>
 
@@ -68,19 +27,7 @@
 
           <h1>Twittler</h1>
 
-          <button class="btn btn-success btn-block" id="tweet-button">New Tweets</button>
-
-          <form class="form-inline">
-            <div class="form-group">
-                <label for="inputTweetHandle">@</label>
-                <input type="text" class="form-control" id="inputeTweetHandle" placeholder="Enter handle">
-            </div>
-            <div class="form-group">
-                <label for="visitorTweet"></label>
-                <input type="text" class="form-control" id="visitorTweet" placeholder="I think...">
-            </div>
-            <button type="submit" class="btn btn-info">Submit</button>
-          </form>
+          <button class="btn btn-success btn-block" id="tweet-button">View Updated Feed</button>
 
           <ul class="list-group" id="feed"></ul>
 
@@ -88,11 +35,10 @@
       </div> <!--- Row -->
 
       </div>
-    </div> <!--- Container -->
-
-                
+    </div> <!--- Container -->      
 
     <footer>&copy; Danielle Blank 2015</footer>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="jquery.js"></script>
@@ -113,7 +59,7 @@
                 var formattedTime = timeSince(tweet.created_at) + (timeSince(tweet.created_at) !== 'Just now' ? ' ago':'');
               $tweet.text('@' + tweet.user + ': ' + tweet.message + " " + formattedTime);
               $tweetItem.append($tweet);
-              $tweetItem.prependTo($feed);
+              $tweetItem.appendTo($feed);
               index -= 1;
               }
             };
@@ -149,12 +95,7 @@
       $('#tweet-button').on('click', getTweets);
       $('.list-group-item.btn.btn-default.user').on('click', function(){
         var name = $(this).text();
-        if(name !== "All Users"){
-          $feed.empty();
-          getUserTweets(name);
-        } else {
-          getTweets;
-        }
+        getUserTweets(name);
       });
       
 
