@@ -29,6 +29,18 @@
 
           <button class="btn btn-success btn-block" id="tweet-button">View Updated Feed</button>
 
+          <form class="form-inline">
+            <div class="form-group">
+                <label for="inputTweetHandle">@</label>
+                <input type="email" class="form-control" id="inputTweetHandle" placeholder="Enter handle">
+            </div>
+            <div class="form-group">
+                <label for="visitorTweet"></label>
+                <input type="text" class="form-control" id="visitorTweet" placeholder="I think...">
+            </div>
+            <button type="submit" class="btn btn-info">Submit</button>
+          </form>
+
           <ul class="list-group" id="feed"></ul>
 
         </div> <!--- col-md-8 -->
@@ -56,8 +68,16 @@
                 var tweet = streams.home[index];
                 var $tweetItem = $('<li class="list-group-item"></li>');
                 var $tweet = $('<div class="tweet"></div>')
-                var formattedTime = timeSince(tweet.created_at) + (timeSince(tweet.created_at) !== 'Just now' ? ' ago':'');
-              $tweet.text('@' + tweet.user + ': ' + tweet.message + " " + formattedTime);
+                var $handle = $('<span class="handle"></span>');
+                var $time = $('<div class="time"></div>');
+                var $at = $('<span class="at"></span>');
+                $at.text('@')
+                $handle.text(tweet.user);
+                $tweet.text(': ' + tweet.message);
+                $time.text(timeSince(tweet.created_at) + (timeSince(tweet.created_at) !== 'Just now' ? ' ago':''));
+              $tweet.prepend($handle);
+              $tweet.prepend($at);
+              $tweet.append($time);
               $tweetItem.append($tweet);
               $tweetItem.appendTo($feed);
               index -= 1;
@@ -71,10 +91,12 @@
                 var tweet = streams.users[username][index];
                 var $tweetItem = $('<li class="list-group-item"></li>');
                 var $tweet = $('<div class="tweet"></div>')
-                var formattedTime = timeSince(tweet.created_at) + (timeSince(tweet.created_at) !== 'Just now' ? ' ago':'');
-                $tweet.text('@' + username + ': ' + tweet.message + " " + formattedTime);
-                $tweetItem.append($tweet);
-                $tweetItem.prependTo($feed);
+                var $time = $('<div class="time"></div>')
+                $time.text(timeSince(tweet.created_at) + (timeSince(tweet.created_at) !== 'Just now' ? ' ago':''));
+              $tweet.text('@' + tweet.user + ': ' + tweet.message + " ");
+              $tweet.append($time);
+              $tweetItem.append($tweet);
+              $tweetItem.appendTo($feed);
                 index += 1;
               }
             };
@@ -83,6 +105,7 @@
       var $body = $('body');
       var $feed = $('#feed');
       var $userList = $('#users');
+      var $visitorForm = $('form');
       
       // Display Userlist
       for (user in streams.users){
@@ -97,6 +120,13 @@
         var name = $(this).text();
         getUserTweets(name);
       });
+      $(document).on('click', '.handle', function(){
+        var name = $(this).text();
+        getUserTweets(name);
+      })
+      
+      // Visitor tweet added to Twittler
+      
       
 
 
