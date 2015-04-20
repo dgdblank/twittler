@@ -11,19 +11,19 @@ function timeSince(date) {
     }
     interval = Math.floor(seconds / 2592000);
     if (interval > 1) {
-        return interval + " months";
+        return interval + " m";
     }
     interval = Math.floor(seconds / 86400);
     if (interval > 1) {
-        return interval + " days";
+        return interval + " d";
     }
     interval = Math.floor(seconds / 3600);
     if (interval > 1) {
-        return interval + " hours";
+        return interval + " h";
     }
     interval = Math.floor(seconds / 60);
     if (interval === 1) {
-        return "about a minute";
+        return "about a minutes";
     }
     if (interval > 1) {
         return interval + " minutes";
