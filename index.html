@@ -30,18 +30,6 @@
 
           <button class="btn btn-success btn-block" id="tweet-button">View Updated Feed</button>
 
-          <form class="form-inline">
-            <div class="form-group">
-                <label for="inputTweetHandle">@</label>
-                <input type="email" class="form-control" id="inputTweetHandle" placeholder="Enter handle">
-            </div>
-            <div class="form-group">
-                <label for="visitorTweet"></label>
-                <input type="text" class="form-control" id="visitorTweet" placeholder="I think...">
-            </div>
-            <button type="submit" class="btn btn-info">Submit</button>
-          </form>
-
           <ul class="list-group" id="feed"></ul>
 
         </div> <!--- col-md-8 -->
@@ -59,6 +47,7 @@
     <script src="timeSince.js"></script>
 
     <script>
+
       $(document).ready(function () {
 
          // Get all Tweets
@@ -85,6 +74,7 @@
               }
             };
 
+            // Display a single user's tweets
             var getUserTweets = function(username) {
               var index = 0;
               $feed.html('');
@@ -97,7 +87,7 @@
               $tweet.text('@' + tweet.user + ': ' + tweet.message + " ");
               $tweet.append($time);
               $tweetItem.append($tweet);
-              $tweetItem.appendTo($feed);
+              $tweetItem.prependTo($feed);
                 index += 1;
               }
             };
@@ -106,7 +96,16 @@
       var $body = $('body');
       var $feed = $('#feed');
       var $userList = $('#users');
-      var $visitorForm = $('form');
+      
+
+      // Visitor Tweet
+      /* $('body').on('submit','form', function() {
+        window.visitor = $('#inputTweetHandle').val();
+        var message = $('#visitorTweet').val();
+        writeTweet(message);
+        $('#visitorTweet').val('');
+        $('#inputTweetHandle').val('');
+      }) */
       
       // Display Userlist
       for (user in streams.users){
@@ -129,14 +128,10 @@
         var name = $(this).text();
         getUserTweets(name);
       });
-      
-      
-      
 
-
+     
     });
 
-    </script>
-    
+    </script>   
   </body>
 </html>
